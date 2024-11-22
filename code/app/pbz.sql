@@ -155,51 +155,51 @@ BEGIN
 END;
 $$;
 
--- Просмотр списка объектов города на текущую дату
+-- -- Просмотр списка объектов города на текущую дату
 
-CREATE OR REPLACE VIEW current_city_objects AS
-SELECT
-    o.object_id,
-    o.name,
-    o.type,
-    o.address,
-    op.opening_date,
-    op.closing_date
-FROM "Место проведения досуга" o
-JOIN Дата_открытия op ON o.object_id = op.object_id
-WHERE op.opening_date <= CURRENT_DATE
-  AND (op.closing_date IS NULL OR op.closing_date >= CURRENT_DATE);
+-- CREATE OR REPLACE VIEW current_city_objects AS
+-- SELECT
+--     o.object_id,
+--     o.name,
+--     o.type,
+--     o.address,
+--     op.opening_date,
+--     op.closing_date
+-- FROM "Место проведения досуга" o
+-- JOIN Дата_открытия op ON o.object_id = op.object_id
+-- WHERE op.opening_date <= CURRENT_DATE
+--   AND (op.closing_date IS NULL OR op.closing_date >= CURRENT_DATE);
 
---Просмотр списка мероприятий на ближайшие 2 недели
+-- --Просмотр списка мероприятий на ближайшие 2 недели
 
-CREATE OR REPLACE VIEW upcoming_events AS
-SELECT
-    e.fut_event_date,
-    e.event_name,
-    o.name AS object_name,
-    o.address
-FROM Мероприятие e
-JOIN "Место проведения досуга" o ON e.object_id = o.object_id
-WHERE e.fut_event_date BETWEEN CURRENT_DATE AND (CURRENT_DATE + INTERVAL '14 days');
+-- CREATE OR REPLACE VIEW upcoming_events AS
+-- SELECT
+--     e.fut_event_date,
+--     e.event_name,
+--     o.name AS object_name,
+--     o.address
+-- FROM Мероприятие e
+-- JOIN "Место проведения досуга" o ON e.object_id = o.object_id
+-- WHERE e.fut_event_date BETWEEN CURRENT_DATE AND (CURRENT_DATE + INTERVAL '14 days');
 
---Просмотр списка объектов заданного типа на текущую датy
+-- --Просмотр списка объектов заданного типа на текущую датy
 
-CREATE OR REPLACE FUNCTION get_city_objects_by_type(p_type VARCHAR)
-RETURNS TABLE (
-    object_id INT,
-    name VARCHAR,
-    type VARCHAR,
-    address VARCHAR,
-    opening_date DATE,
-    closing_date DATE
-) AS $$
-BEGIN
-    RETURN QUERY
-    SELECT c.object_id, c.name, c.type, c.address, c.opening_date, c.closing_date
-    FROM current_city_objects c
-    WHERE c.type = p_type;
-END;
-$$ LANGUAGE plpgsql;
+-- CREATE OR REPLACE FUNCTION get_city_objects_by_type(p_type VARCHAR)
+-- RETURNS TABLE (
+--     object_id INT,
+--     name VARCHAR,
+--     type VARCHAR,
+--     address VARCHAR,
+--     opening_date DATE,
+--     closing_date DATE
+-- ) AS $$
+-- BEGIN
+--     RETURN QUERY
+--     SELECT c.object_id, c.name, c.type, c.address, c.opening_date, c.closing_date
+--     FROM current_city_objects c
+--     WHERE c.type = p_type;
+-- END;
+-- $$ LANGUAGE plpgsql;
 
 --РЕДАКТИРОВАНИЕ
 
