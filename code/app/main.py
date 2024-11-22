@@ -11,7 +11,7 @@ import logging
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.DEBUG, filename="py_log.log",filemode="w")
 
 @app.get("/", response_class=HTMLResponse)
 def menu_page(request: Request):
