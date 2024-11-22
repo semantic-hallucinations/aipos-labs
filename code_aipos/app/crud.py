@@ -170,37 +170,37 @@ def delete_date(date_id):
         raise e
     
 # особые просмотры
-def fetch_current_objects():
-    try:
-        with conn.cursor() as cursor:
-            cursor.execute("""SELECT * FROM current_city_objects;""")
-            curr_objects = cursor.fetchall()
-            return curr_objects
-    except Exception as e:
-        print(f"Error fetching current objects: {e}")
-        return []
+# def fetch_current_objects():
+#     try:
+#         with conn.cursor() as cursor:
+#             cursor.execute("""SELECT * FROM current_city_objects;""")
+#             curr_objects = cursor.fetchall()
+#             return curr_objects
+#     except Exception as e:
+#         print(f"Error fetching current objects: {e}")
+#         return []
     
-def fetch_upcoming_events():
-    try:
-        with conn.cursor() as cursor:
-            cursor.execute("SELECT * FROM upcoming_events;")
-            events = cursor.fetchall() 
-            return events
-    except Exception as e:
-        print(f"Error fetching upcoming events: {e}")
-        return []
+# def fetch_upcoming_events():
+#     try:
+#         with conn.cursor() as cursor:
+#             cursor.execute("SELECT * FROM upcoming_events;")
+#             events = cursor.fetchall() 
+#             return events
+#     except Exception as e:
+#         print(f"Error fetching upcoming events: {e}")
+#         return []
     
-def fetch_curr_type_objects(obj_type):
-    try:
-        with conn.cursor() as cursor:
-            cursor.execute("""
-                SELECT * FROM get_city_objects_by_type(%s);
-            """, (obj_type,))
-            curr_type_obj = cursor.fetchall()
-        return curr_type_obj
-    except Exception as e:
-        print(f"Error fetching current objects by type: {e}")
-        return []
+# def fetch_curr_type_objects(obj_type):
+#     try:
+#         with conn.cursor() as cursor:
+#             cursor.execute("""
+#                 SELECT * FROM get_city_objects_by_type(%s);
+#             """, (obj_type,))
+#             curr_type_obj = cursor.fetchall()
+#         return curr_type_obj
+#     except Exception as e:
+#         print(f"Error fetching current objects by type: {e}")
+#         return []
 
 # вспомогательные просмотры
 

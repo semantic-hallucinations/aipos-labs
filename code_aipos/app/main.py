@@ -1,4 +1,3 @@
-# main.py
 from fastapi import FastAPI, HTTPException, Request, Form
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
@@ -15,7 +14,7 @@ logging.basicConfig(level=logging.DEBUG, filename="py_log.log",filemode="w")
 
 @app.get("/", response_class=HTMLResponse)
 def menu_page(request: Request):
-    logging.debug("Открытие страницы меню")
+    logging.debug("Opening menu window")
     return templates.TemplateResponse("menu.html", {"request": request})
 
 
@@ -23,50 +22,50 @@ def menu_page(request: Request):
 def create_owner(contact: str = Form(...), type_of_owner: str = Form(...), name: str = Form(...), owners_fullname : str = Form(...)):
     try:
         add_owner(contact, type_of_owner, name, owners_fullname)
-        logging.debug("Добавление владельца")
+        logging.debug("Adding owner")
         return RedirectResponse(url="/owners/", status_code=303)
     except Exception as e:
-        logging.warning("Добавление владельца пошло не так")
+        logging.warning("Something gone wrong while adding owner")
         raise HTTPException(status_code=500, detail=str(e))
     
 @app.post("/objects/add")
 def create_object(type: str = Form(...), adress: str = Form(...), name: str = Form(...), number_of_places: int = Form(...), owner_id: int = Form(...)):
     try:
         add_object(type, adress, name, number_of_places,owner_id)
-        logging.debug("Добавление объекта")
+        logging.debug("Adding object")
         return RedirectResponse(url="/objects/", status_code=303)
     except Exception as e:
-        logging.warning("Добавление объекта пошло не так")
+        logging.warning("Something gone wrong while adding object")
         raise HTTPException(status_code=500, detail=str(e))
     
 @app.post("/popularities/add")
 def create_popularity(event_date: date = Form(...), number_of_visitors: int = Form(...), object_id: int = Form(...)):
     try:
         add_popularity(event_date, number_of_visitors, object_id)
-        logging.debug("Добавление популярности")
+        logging.debug("Adding popularity")
         return RedirectResponse(url="/popularities/", status_code=303)
     except Exception as e:
-        logging.warning("Добавление популярности пошло не так")
+        logging.warning("Something gone wrong while adding popularity")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/events/add")
 def create_event(fut_event_date: date = Form(...), event_name: str = Form(...), event_type: str = Form(...), object_id: int = Form(...)):
     try:
         add_event(fut_event_date, event_name, event_type, object_id)
-        logging.debug("Добавление мероприятия")
+        logging.debug("Adding event")
         return RedirectResponse(url="/events/", status_code=303)
     except Exception as e:
-        logging.warning("Добавление мероприятия пошло не так")
+        logging.warning("Something gone wrong while adding event")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/dates/add")
 def create_date(opening_date: date = Form(...), closing_date: date = Form(...), object_id: int = Form(...)):
     try:
         add_date(opening_date, closing_date, object_id)
-        logging.debug("Добавление дат работы")
+        logging.debug("Adding working dates")
         return RedirectResponse(url="/dates/", status_code=303)
     except Exception as e:
-        logging.warning("Добавление дат работы пошло не так")
+        logging.warning("Something gone wrong while adding working dates")
         raise HTTPException(status_code=500, detail=str(e))
 
 # обновление
@@ -74,9 +73,9 @@ def create_date(opening_date: date = Form(...), closing_date: date = Form(...), 
 def edit_owner_page(request: Request):
     owner_id = request.path_params['owner_id']
     owner = get_owner_by_id(owner_id)
-    logging.debug("Окно обновления владельца")
+    logging.debug("Owners editing window")
     if owner is None:
-        logging.warning("Инфа о владельце не передалась")
+        logging.warning("Owner not found")
         raise HTTPException(status_code=404, detail="Owner not found")
     return templates.TemplateResponse("edit_owner.html", {"request": request, "owner": owner})
 
@@ -85,10 +84,10 @@ def edit_owner(request: Request, contact: str = Form(...), type_of_owner: str = 
     try:
         owner_id = request.path_params['owner_id']
         update_owner(owner_id, contact, type_of_owner, name, owners_fullname)
-        logging.debug("Обновление владельца")
+        logging.debug("Update владельца")
         return RedirectResponse(url="/owners/", status_code=303)
     except Exception as e:
-        logging.warning("Что то пошло не так при обновлении владельца")
+        logging.warning("Something gone wrong while editing owner")
         raise HTTPException(status_code=500, detail=str(e))
 
 #----------------
@@ -98,9 +97,9 @@ def edit_object_page(request: Request):
     object_id = request.path_params['object_id']
     object = get_object_by_id(object_id)
     owners = get_owners()
-    logging.debug("Окно обновления объекта")
+    logging.debug("Objects editing window")
     if object is None:
-        logging.warning("Инфа об объекте не передалась")
+        logging.warning("Object not found")
         raise HTTPException(status_code=404, detail="Object not found")
     return templates.TemplateResponse("edit_object.html", {"request": request, "object": object, "owners": owners})
     
@@ -109,10 +108,10 @@ def edit_object(request: Request, type: str = Form(...), adress: str = Form(...)
     try:
         object_id = request.path_params['object_id']
         update_object(object_id, type, adress, name, number_of_places,owner_id)
-        logging.debug("Обновление объекта")
+        logging.debug("Update объекта")
         return RedirectResponse(url="/objects/", status_code=303)
     except Exception as e:
-        logging.warning("Что то пошло не так при обновлении объекта")
+        logging.warning("Something gone wrong while editing object")
         raise HTTPException(status_code=500, detail=str(e))
 
 #-------------    
@@ -121,9 +120,9 @@ def edit_object(request: Request, type: str = Form(...), adress: str = Form(...)
 def edit_popularity_page(request: Request):
     popularity_id = request.path_params['popularity_id']
     popularity = get_popularity_by_id(popularity_id)
-    logging.debug("Окно обновления популярности")
+    logging.debug("Popilarytys editing window")
     if popularity is None:
-        logging.warning("Инфа о популярности не передалась")
+        logging.warning("Popularity not found")
         raise HTTPException(status_code=404, detail="Popularity not found")
     return templates.TemplateResponse("edit_popularity.html", {"request": request, "popularity": popularity})
 
@@ -132,10 +131,10 @@ def edit_popularity(request: Request, event_date: date = Form(...), number_of_vi
     try:
         popularity_id = request.path_params['popularity_id']
         update_popularity(popularity_id, event_date, number_of_visitors)
-        logging.debug("Обновление популярности")
+        logging.debug("Update популярности")
         return RedirectResponse(url="/popularities/", status_code=303)
     except Exception as e:
-        logging.warning("Инфа о популярности не передалась")
+        logging.warning("Something gone wrong while editing popularity")
         raise HTTPException(status_code=500, detail=str(e))
 
 #-------------------
@@ -144,9 +143,9 @@ def edit_popularity(request: Request, event_date: date = Form(...), number_of_vi
 def edit_event_page(request: Request):
     event_id = request.path_params['event_id']
     event = get_event_by_id(event_id)
-    logging.debug("Окно обновления мероприятия")
+    logging.debug("Events editing window")
     if event is None:
-        logging.warning("Инфа о мероприятии не передалась")
+        logging.warning("Event not found")
         raise HTTPException(status_code=404, detail="Event not found")
     return templates.TemplateResponse("edit_event.html", {"request": request, "event": event})
 
@@ -155,10 +154,10 @@ def edit_event(request: Request, fut_event_date: date = Form(...), event_name: s
     try:
         event_id = request.path_params['event_id']
         update_event(event_id, fut_event_date, event_name, event_type)
-        logging.debug("Обновление мероприятия")
+        logging.debug("Update мероприятия")
         return RedirectResponse(url="/events/", status_code=303)
     except Exception as e:
-        logging.warning("Что то пошло не так при обновлении мероприятия")
+        logging.warning("Something gone wrong while editing event")
         raise HTTPException(status_code=500, detail=str(e))
 
 #---------------------
@@ -167,9 +166,9 @@ def edit_event(request: Request, fut_event_date: date = Form(...), event_name: s
 def edit_date_page(request: Request):
     date_id = request.path_params['date_id']
     date = get_date_by_id(date_id)
-    logging.debug("Окно обновления даты")
+    logging.debug("Working dates editing window")
     if date is None:
-        logging.warning("Инфа о датах не передалась")
+        logging.warning("Date not found")
         raise HTTPException(status_code=404, detail="Date not found")
     return templates.TemplateResponse("edit_date.html", {"request": request, "date": date})
 
@@ -178,10 +177,10 @@ def edit_date(request: Request, opening_date: date = Form(...), closing_date: da
     try:
         date_id = request.path_params['date_id']
         update_date(date_id, opening_date, closing_date)
-        logging.debug("Обновление даты")
+        logging.debug("Update working dates")
         return RedirectResponse(url="/dates/", status_code=303)
     except Exception as e:
-        logging.warning("Что то пошло не так при обновлении дат")
+        logging.warning("Something gone wrong while editing working dates")
         raise HTTPException(status_code=500, detail=str(e))
 
 # удаление 
@@ -190,10 +189,10 @@ def remove_owner(request: Request):
     try:
         owner_id = request.path_params['owner_id']
         delete_owner(owner_id)
-        logging.debug("Удаление владельца")
+        logging.debug("Delete owner")
         return RedirectResponse(url="/owners/", status_code=303)
     except Exception as e:
-        logging.warning("Что то пошло не так при удалении владельца")
+        logging.warning("Something gone wrong while deleting owner")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/objects/delete/{object_id}")
@@ -201,10 +200,10 @@ def remove_object(request: Request):
     try:
         object_id = request.path_params['object_id']
         delete_city_object(object_id)
-        logging.debug("Удаление объекта")
+        logging.debug("Delete object")
         return RedirectResponse(url="/objects/", status_code=303)
     except Exception as e:
-        logging.warning("Что то пошло не так при удалении объекта")
+        logging.warning("Something gone wrong while deleting object")
         raise HTTPException(status_code=500, detail=str(e))
     
 @app.post("/popularities/delete/{popularity_id}")
@@ -212,10 +211,10 @@ def remove_popularity(request: Request):
     try:
         popularity_id = request.path_params['popularity_id']
         delete_popularity(popularity_id)
-        logging.debug("Удаление популярности")
+        logging.debug("Delete popularity")
         return RedirectResponse(url="/popularities/", status_code=303)
     except Exception as e:
-        logging.warning("Что то пошло не так при удалении записи о популярности")
+        logging.warning("Something gone wrong while deleting popularity")
         raise HTTPException(status_code=500, detail=str(e))
     
 @app.post("/events/delete/{event_id}")
@@ -223,10 +222,10 @@ def remove_event(request: Request):
     try:
         event_id = request.path_params['event_id']
         delete_event(event_id)
-        logging.debug("Удаление мероприятия")
+        logging.debug("Delete event")
         return RedirectResponse(url="/events/", status_code=303)
     except Exception as e:
-        logging.warning("Что то пошло не так при удалении записи о мероприятии")
+        logging.warning("Something gone wrong while deleting event")
         raise HTTPException(status_code=500, detail=str(e))
     
 @app.post("/dates/delete/{date_id}")
@@ -234,10 +233,10 @@ def remove_date(request: Request):
     try:
         date_id = request.path_params['date_id']
         delete_date(date_id)
-        logging.debug("Удаление даты")
+        logging.debug("Delete working dates")
         return RedirectResponse(url="/dates/", status_code=303)
     except Exception as e:
-        logging.warning("Что то пошло не так при удалении записи о датах работы")
+        logging.warning("Something gone wrong while deleting working dates")
         raise HTTPException(status_code=500, detail=str(e))
 
 #---особые--селекты-----

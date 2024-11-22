@@ -1,12 +1,9 @@
 from .config import settings
 import psycopg2
 from psycopg2 import sql
-# from sqlalchemy import MetaData, Table, Index, Column, ForeignKey, String, Integer, DateTime
-# import asyncpg
-
 DATABASE_URL = settings.get_db_url()
 
-
+print(DATABASE_URL)
 
 def connect_db():
     return psycopg2.connect(DATABASE_URL)
