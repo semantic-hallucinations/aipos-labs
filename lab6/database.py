@@ -1,4 +1,4 @@
-from .config import settings
+from config import settings
 import psycopg2
 from psycopg2 import sql
 DATABASE_URL = settings.get_db_url()

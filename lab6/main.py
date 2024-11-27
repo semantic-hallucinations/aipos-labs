@@ -1,15 +1,16 @@
 from fastapi import FastAPI, HTTPException, Request, Form
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
-from app.crud import *  
-from app.database import conn
+from crud import *  
+from database import conn
 from typing import Optional
 from datetime import date
 import logging
+import os
 
 
 app = FastAPI()
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory=os.path.join(os.path.dirname(__file__), "templates"))
 logging.basicConfig(level=logging.DEBUG, filename="py_log.log",filemode="w")
 
 @app.get("/", response_class=HTMLResponse)
