@@ -1,0 +1,7 @@
+/venv
+/pgdata
+.env
+utils.py
+test.py
+/app/__pycache__
+py_log.log
