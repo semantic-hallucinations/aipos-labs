@@ -13,61 +13,8 @@ app = FastAPI()
 templates = Jinja2Templates(directory=os.path.join(os.path.dirname(__file__), "templates"))
 logging.basicConfig(level=logging.DEBUG, filename="py_log.log",filemode="w")
 
-@app.get("/", response_class=HTMLResponse)
-def menu_page(request: Request):
-    logging.debug("Opening menu window")
-    return templates.TemplateResponse("menu.html", {"request": request})
 
 
-@app.post("/owners/add")
-def create_owner(contact: str = Form(...), type_of_owner: str = Form(...), name: str = Form(...), owners_fullname : str = Form(...)):
-    try:
-        add_owner(contact, type_of_owner, name, owners_fullname)
-        logging.debug("Adding owner")
-        return RedirectResponse(url="/owners/", status_code=303)
-    except Exception as e:
-        logging.warning("Something gone wrong while adding owner")
-        raise HTTPException(status_code=500, detail=str(e))
-    
-@app.post("/objects/add")
-def create_object(type: str = Form(...), adress: str = Form(...), name: str = Form(...), number_of_places: int = Form(...), owner_id: int = Form(...)):
-    try:
-        add_object(type, adress, name, number_of_places,owner_id)
-        logging.debug("Adding object")
-        return RedirectResponse(url="/objects/", status_code=303)
-    except Exception as e:
-        logging.warning("Something gone wrong while adding object")
-        raise HTTPException(status_code=500, detail=str(e))
-    
-@app.post("/popularities/add")
-def create_popularity(event_date: date = Form(...), number_of_visitors: int = Form(...), object_id: int = Form(...)):
-    try:
-        add_popularity(event_date, number_of_visitors, object_id)
-        logging.debug("Adding popularity")
-        return RedirectResponse(url="/popularities/", status_code=303)
-    except Exception as e:
-        logging.warning("Something gone wrong while adding popularity")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.post("/events/add")
-def create_event(fut_event_date: date = Form(...), event_name: str = Form(...), event_type: str = Form(...), object_id: int = Form(...)):
-    try:
-        add_event(fut_event_date, event_name, event_type, object_id)
-        logging.debug("Adding event")
-        return RedirectResponse(url="/events/", status_code=303)
-    except Exception as e:
-        logging.warning("Something gone wrong while adding event")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.post("/dates/add")
-def create_date(opening_date: date = Form(...), closing_date: date = Form(...), object_id: int = Form(...)):
-    try:
-        add_date(opening_date, closing_date, object_id)
-        logging.debug("Adding working dates")
-        return RedirectResponse(url="/dates/", status_code=303)
-    except Exception as e:
-        logging.warning("Something gone wrong while adding working dates")
-        raise HTTPException(status_code=500, detail=str(e))
 
 # обновление
 @app.get("/owners/put/{owner_id}")
@@ -240,69 +187,7 @@ def remove_date(request: Request):
         logging.warning("Something gone wrong while deleting working dates")
         raise HTTPException(status_code=500, detail=str(e))
 
-#---особые--селекты-----
-# @app.get("/objects/currrent")
-# def view_current_objects(request: Request):
-#     curr_objects = fetch_current_objects()
-#     return templates.TemplateResponse("but_curr_object.html", {"request": request, "curr_objects": curr_objects})
 
-# @app.get("/events/upcoming")
-# def view_upcoming_events(request: Request):
-#     upcoming_events = fetch_upcoming_events()
-#     return templates.TemplateResponse("upcoming_events.html", {"request": request, "upcoming_events": upcoming_events})
-
-# @app.get("/objects/select_type", response_class=HTMLResponse)
-# def select_object_type_page(request: Request):
-#     objects = list(set([i[2] for i in get_objects()]))
-#     return templates.TemplateResponse(
-#         "select_object_type.html", 
-#         {"request": request, "objects": objects}
-#     )
-
-
-# @app.post("/objects/select_type", response_class=HTMLResponse)
-# def view_objects_by_type(request: Request, type: str = Form(...)):
-#     try:
-#         logging.debug(type)
-#         cur_type_objects = fetch_curr_type_objects(type) 
-#         logging.debug(cur_type_objects)
-#         return templates.TemplateResponse(
-#             "but_curr_type_object.html", 
-#             {"request": request, "cur_type_objects": cur_type_objects, "type": type}
-#         )
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=str(e))
-
-
-#----обычные-----селекты----------
-@app.get("/owners/", response_class=HTMLResponse)
-def view_owners(request: Request):
-    owners = get_owners() 
-    return templates.TemplateResponse("view_owners.html", {"request": request, "owners": owners})
-
-@app.get("/objects/", response_class=HTMLResponse)
-def view_objects(request: Request):
-    objects = get_objects() 
-    owners = get_owners()
-    return templates.TemplateResponse("view_objects.html", {"request": request, "objects": objects, "owners": owners})
-
-@app.get("/popularities/", response_class=HTMLResponse)
-def view_popularities(request: Request):
-    popularities = get_popularities() 
-    objects = get_objects() 
-    return templates.TemplateResponse("view_popularities.html", {"request": request, "popularities": popularities, "objects": objects})
-
-@app.get("/events/", response_class=HTMLResponse)
-def view_events(request: Request):
-    events = get_events() 
-    objects = get_objects() 
-    return templates.TemplateResponse("view_events.html", {"request": request, "events": events, "objects": objects})
-
-@app.get("/dates/", response_class=HTMLResponse)
-def view_dates(request: Request):
-    dates = get_dates() 
-    objects = get_objects() 
-    return templates.TemplateResponse("view_dates.html", {"request": request, "dates": dates, "objects": objects})
 
 
 @app.on_event("shutdown")

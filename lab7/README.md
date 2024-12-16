@@ -35,3 +35,43 @@
 * Конфигурация через ENV переменные;  
 * Запись access log в файл;  
 * Вывод краткой, понятной человеку информации в консоль.
+```
+lab7
+├─ .gitignore
+├─ Dockerfile
+├─ README.md
+├─ api
+│  ├─ Dockerfile
+│  ├─ config.py
+│  ├─ crud.py
+│  ├─ database.py
+│  ├─ main.py
+│  └─ requirements.txt
+├─ docker-compose.yml
+├─ init.sql
+├─ main.py
+├─ requirements.txt
+└─ web
+   ├─ Dockerfile
+   ├─ main.py
+   ├─ requirements.txt
+   └─ templates
+      ├─ but_curr_date_object.html
+      ├─ but_curr_object.html
+      ├─ but_curr_type_object.html
+      ├─ edit_date.html
+      ├─ edit_event.html
+      ├─ edit_object.html
+      ├─ edit_owner.html
+      ├─ edit_popularity.html
+      ├─ menu.html
+      ├─ select_object_date.html
+      ├─ select_object_type.html
+      ├─ upcoming_events.html
+      ├─ view_dates.html
+      ├─ view_events.html
+      ├─ view_objects.html
+      ├─ view_owners.html
+      └─ view_popularities.html
+
+```

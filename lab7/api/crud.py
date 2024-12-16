@@ -1,5 +1,5 @@
-# crud.py
 from database import conn
+
 
 # добавление
 def add_owner(contact, type_of_owner, name, owners_fullname):
